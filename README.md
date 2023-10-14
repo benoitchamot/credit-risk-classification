@@ -1,4 +1,4 @@
-# Supervised Learning Models for Credit Risk Classification
+# Supervised Learning for Credit Risk Classification
 Train and evaluate models to classify loan risks.
 
 ## File structure
