@@ -1,11 +1,13 @@
-# credit-risk-classification
+# Supervised Learning Models for Credit Risk Classification
 Train and evaluate models to classify loan risks.
 
 ## File structure
+* The `img` directory contains PNG images of the charts generated in the analysis
 * The `Resources` directory contains the lending data provided by Monash University
 * The `credit_risk_classification.ipynb` Jupyter notebook contains the main analysis, including the code and results
 * The `ml_classification.py` module contains functions that are commonly used in classification projects (supervised learning)
 * The `models_optimisation.ipynb` Jupyter notebook contains contains a side analysis with the aim to optimise some of the models' parameters
+* The `style.py` module contains variables used to define the style of the charts, such as colors
 
 All code is the author's, unless otherwise specifically specified.
 
