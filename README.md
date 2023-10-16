@@ -18,9 +18,18 @@ This README files contains the main points from the analysis and our conclusions
 In this analysis, we look at the ability of different machine learning (ML) models to classify healthy and high-risk loans.
 
 ### About the data
-* Explain what financial information the data was on, and what you needed to predict.
-* Provide basic information about the variables you were trying to predict (e.g., `value_counts`).
+The dataset includes the following information about the loans and the borrowers:
+* loan size
+* interest rate
+* borrower income
+* debt to income ratio
+* number of accounts 
+* derogatory marks 
+* total debt of the borrower
 
+Because the values range can differ a lot between the different columns, it is expected that the classifier will benefit from using scaled data. An initial model is used with the original data first to establish a baseline but scaled data will be used as a first optimisation step (see below.)
+
+The loan status is the value we try to predict. It can take a value of 0 (healthy loans) or 1 (high-risk). The data provided include 75036 loans classified as healthy and 2500 classified as high-risk.
 
 ### Methods used
 The following models form the `sklearn` library are evaluated:
@@ -43,3 +52,99 @@ For each of the models, we then perform the following steps
 * Fitting (i.e. train the model with the training set)
 * Predictions (i.e. use the test set )
 * Describe the stages of the machine learning process you went through as part of this analysis.
+
+### Results
+A comparison between all the models is given in the table below.
+
+<table>
+    <tr>
+        <th>Model</th>
+        <th>Description</th>
+        <th>Data</th>
+        <th>accuracy</th>
+        <th>precision_0</th>
+        <th>precision_1</th>
+        <th>recall_0</th>
+        <th>recall_1</th>
+    </tr>
+    <tr>
+        <td>Model 4</td>
+        <td>DecisionTreeClassifier (max_depth = 3)</td>
+        <td>Scaled</td>
+        <td>0.9952</td>
+        <td>0.9998</td>
+        <td>0.8735</td>
+        <td>0.9952</td>
+        <td>0.9952</td>
+    </tr>
+    <tr>
+        <td>Model 6</td>
+        <td>KNeighborsClassifier (max_depth = 11)</td>
+        <td>Scaled</td>
+        <td>0.9950</td>
+        <td>0.9997</td>
+        <td>0.8732</td>
+        <td>0.9952</td>
+        <td>0.9920</td>
+    </tr>
+    <tr>
+        <td>Model 2</td>
+        <td>LogisticRegression</td>
+        <td>Scaled</td>
+        <td>0.9947</td>
+        <td>0.9993</td>
+        <td>0.8719</td>
+        <td>0.9952</td>
+        <td>0.9808</td>
+    </tr>
+    <tr>
+        <td>Model 3</td>
+        <td>SVC</td>
+        <td>Scaled</td>
+        <td>0.9947</td>
+        <td>0.9993</td>
+        <td>0.8719</td>
+        <td>0.9952</td>
+        <td>0.9808</td>
+    </tr>
+    <tr>
+        <td>Model 1</td>
+        <td>LogisticRegression</td>
+        <td>Original</td>
+        <td>0.9924</td>
+        <td>0.9964</td>
+        <td>0.8746</td>
+        <td>0.9957</td>
+        <td>0.8928</td>
+    </tr>
+    <tr>
+        <td>Model 5</td>
+        <td>RandomForestClassifier (n_estimators = 220)</td>
+        <td>Scaled</td>
+        <td>0.9923</td>
+        <td>0.9962</td>
+        <td>0.8765</td>
+        <td>0.9958</td>
+        <td>0.8864</td>
+    </tr>
+</table>
+
+**Main observations**
+* The accuracy is excellent for all models
+* All models perform similarly against all metrics
+* There is however a bigger spread in Class-1 recall (see next chart)
+* Class-1 recall is probably the single most important performance metric for this application: we want to make sure that the lenders trust the models and provide and agree to loans that are correctly classified as healthy
+* All models show Class-1 recall metrics of 0.88 or higher but Model 4 (decision tree) shows a near-perfect recall of 0.99, which greatly reduces the risk to the lenders
+
+
+<img src="img/metrics_statistics_per_model.png" width="800px">
+
+The precision and recall for the different models are shown in the charts below. The models are sorted by their Class-1 recall value.
+
+<img src="img/precision_per_models.png" width="800px">
+<img src="img/recall_per_models.png" width="800px">
+
+### Recommendations
+While all the models perform well with all metrics above 0.8 and usually close to 0.9, the Decision Tree Classifier offers oustanding performance when it comes to recall (ability to correctly classify risky loans as such) and therefore can be trusted by lenders who want to avoid unexpected risks.
+
+Class-1 recall is by far the most variable metrics among the different metrics (accuracy, precision, recall.) Optimising for Class-1 recall will therefore have very limited impact on the other metrics and can be treated as a one-dimension optimisation problem.
